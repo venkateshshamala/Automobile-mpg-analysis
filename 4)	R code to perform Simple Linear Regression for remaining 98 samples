@@ -1,0 +1,43 @@
+# Select the CSV file interactively
+file_path <- file.choose()
+
+# Read the data from the selected CSV file
+data <- read.csv(file_path)
+
+# Assign weight and mpg to variables
+x <- data$weight
+y <- data$mpg
+
+# Perform simple linear regression
+model <- lm(y ~ x)
+
+# Display regression summary
+regression_summary <- summary(model)
+print(regression_summary)
+
+# Plot the data and regression line
+plot(x, y, main = "Simple Linear Regression", xlab = "Weight", ylab = "MPG")
+abline(model, col = "red")
+
+# Extract coefficients for the regression equation
+intercept <- coef(model)[1]
+slope <- coef(model)[2]
+
+# Display the regression equation on the plot
+equation <- sprintf("Regression Equation: y = %.2f + %.2fx", intercept, slope)
+text(min(x), max(y), pos = 4, labels = equation, col = "magenta")
+
+# Calculate residuals
+residuals <- residuals(model)
+
+# Create a layout for residual plots
+par(mfrow = c(2, 1))
+
+# Residuals vs. Fitted plot
+plot(model$fitted.values, residuals, main = "Residuals vs. Fitted", xlab = "Fitted Values", ylab = "Residuals", col = "blue")
+
+# Reset the layout
+par(mfrow = c(1, 1))
+
+# Plot histogram of residuals
+hist(residuals, main = "Histogram of Residuals", xlab = "Residuals", col = "lightblue", border = "black")
