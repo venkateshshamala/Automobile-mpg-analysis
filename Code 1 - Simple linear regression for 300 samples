@@ -1,0 +1,28 @@
+# Select the CSV file interactively
+file_path <- file.choose()
+
+# Read the first 300 samples from the selected CSV file
+data <- read.csv(file_path, nrows = 300)
+
+# Assign weight and mpg to variables
+x <- data$weight
+y <- data$mpg
+
+# Perform simple linear regression
+model <- lm(y ~ x)
+
+# Display regression summary
+regression_summary <- summary(model)
+print(regression_summary)
+
+# Plot the data and regression line
+plot(x, y, main = "Simple Linear Regression", xlab = "Weight", ylab = "MPG")
+abline(model, col = "red")
+
+# Extract coefficients for the regression equation
+intercept <- coef(model)[1]
+slope <- coef(model)[2]
+
+# Display the regression equation on the plot
+equation <- sprintf("Regression Equation: y = %.2f + %.2fx", intercept, slope)
+text(min(x), max(y), pos = 4, labels = equation, col = "magenta")
