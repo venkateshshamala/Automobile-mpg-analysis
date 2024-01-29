@@ -1,0 +1,33 @@
+# Select the CSV file interactively
+file_path <- file.choose()
+
+# Read the first 300 samples from the selected CSV file
+data <- read.csv(file_path, nrows = 300)
+
+# Assign predictor variables (weight and displacement) and response variable (mpg)
+predictor_variables <- c("weight", "displacement")
+response_variable <- "mpg"
+
+# Extract the specified variables from the data
+model_data <- data[, c(predictor_variables, response_variable)]
+
+# Perform multiple linear regression
+model <- lm(paste(response_variable, "~", paste(predictor_variables, collapse = " + ")), data = model_data)
+
+# Display regression summary
+regression_summary <- summary(model)
+print(regression_summary)
+
+# Extract coefficients for the regression equation
+coefficients <- coef(model)
+
+# Display the linear regression equation
+equation <- sprintf("Linear Regression Equation:\n%s = %.2f + %.2f*weight + %.2f*displacement", response_variable, coefficients[1], coefficients[2], coefficients[3])
+print(equation)
+
+# Plot the data and regression line using all coefficients
+plot(data$weight, data$mpg, main = "Multiple Linear Regression", xlab = "Weight", ylab = "MPG")
+abline(coefficients[1], coefficients[2], col = "red", lty = 2)
+
+# Add equation text to the plot at coordinates (3000, 400)
+text(3500, 40, labels = equation, col = "blue", pos = 3)
